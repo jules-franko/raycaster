@@ -15,8 +15,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see https://www.gnu.org/licenses.*/
 
 #include "raylib.h"
+#include <math.h>
+#include <iostream>
+
+const int screenWidth = 512;
+const int screenHeight = 512;
 
 float px, py;
+float p_angle = 0;
+
 int mapX=8, mapY=8, mapS=64;
 int map[] =
 {
@@ -32,6 +39,13 @@ int map[] =
 
 void drawPlayer(float posX, float posY) {
     DrawPixel(posX, posY, YELLOW);
+
+    float ray_end_x = px + 105 * cos(p_angle);
+    float ray_end_y = py + 105 * sin(p_angle);
+
+    DrawLine(posX, posY, ray_end_x, ray_end_y, YELLOW);
+
+
 }
 
 void drawMap2d() {
@@ -47,20 +61,39 @@ void drawMap2d() {
 }
 
 void movePlayer() {
-    if (IsKeyDown(KEY_D)) px++;
-    if (IsKeyDown(KEY_A)) px--;
-    if (IsKeyDown(KEY_W)) py--;
-    if (IsKeyDown(KEY_S)) py++;
+    //if (IsKeyDown(KEY_D)) px++;
+    //if (IsKeyDown(KEY_A)) px--;
+
+    if (IsKeyDown(KEY_W)) {
+        px += 1*cos(p_angle);
+        py += 1*sin(p_angle);
+    }
+    if (IsKeyDown(KEY_S)) {
+        px -= 1*cos(p_angle);
+        py -= 1*sin(p_angle);
+    }
+
+    if (IsKeyDown(KEY_D)) {
+        p_angle += 0.01;
+        if (p_angle >= 2*PI) {
+            p_angle = 0;
+        }
+    }
+    if (IsKeyDown(KEY_A)) {
+        p_angle -= 0.01;
+        if (p_angle <= 0) {
+            p_angle = 2*PI;
+        }
+    }
 }
 
 int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 512;
-    const int screenHeight = 512;
 
-    px = screenWidth/2; py = screenHeight/2;
+    px = screenWidth/2;
+    py = screenHeight/2;
 
     InitWindow(screenWidth, screenHeight, "Divine Intellect Raycaster");
 

@@ -23,6 +23,7 @@ const int screenHeight = 512;
 
 float px, py;
 float p_angle = 0;
+float pdx, pdy;
 
 int mapX=8, mapY=8, mapS=64;
 int map[] =
@@ -37,13 +38,38 @@ int map[] =
     1, 1, 1, 1, 1, 1, 1, 1,
 };
 
-void drawPlayer(float posX, float posY) {
-    DrawPixel(posX, posY, YELLOW);
+void drawPlayer() {
+    DrawPixel(px, py, YELLOW);
+}
 
-    float ray_end_x = px + 105 * cos(p_angle);
-    float ray_end_y = py + 105 * sin(p_angle);
+void drawRays() {
+    float ray_end_x = px + 512 * pdx;
+    float ray_end_y = py + 512 * pdy;
 
-    DrawLine(posX, posY, ray_end_x, ray_end_y, YELLOW);
+    DrawLine(px, py, ray_end_x, ray_end_y, GREEN);
+}
+
+void drawRaysBad()
+{
+
+    for (int j = 0; j < 0.66; j++)
+    {
+
+        for (int i = 0; i < 512; i++) {
+            float lx = px + i * pdx;
+            float ly = py + i * pdy;
+
+            DrawPixel(lx, ly, GREEN);
+
+            int y = int(ly/64);
+            int x = int(lx/64);
+
+            if ((map[  x  ] == 1) && (map[ y*8+x ])) {
+                break;
+            }
+        }
+
+    }
 
 
 }
@@ -61,8 +87,6 @@ void drawMap2d() {
 }
 
 void movePlayer() {
-    //if (IsKeyDown(KEY_D)) px++;
-    //if (IsKeyDown(KEY_A)) px--;
 
     if (IsKeyDown(KEY_W)) {
         px += 1*cos(p_angle);
@@ -94,6 +118,8 @@ int main(void)
 
     px = screenWidth/2;
     py = screenHeight/2;
+    pdx = cos(p_angle);
+    pdy = sin(p_angle);
 
     InitWindow(screenWidth, screenHeight, "Divine Intellect Raycaster");
 
@@ -106,6 +132,8 @@ int main(void)
         // Update
         // Update your variables here
         movePlayer();
+        pdx = cos(p_angle);
+        pdy = sin(p_angle);
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -113,7 +141,9 @@ int main(void)
 
             ClearBackground(BLACK);
             drawMap2d();
-            drawPlayer(px, py);
+            drawPlayer();
+            drawRaysBad();
+            //drawRays();
 
         EndDrawing();
         //----------------------------------------------------------------------------------

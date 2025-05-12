@@ -52,12 +52,19 @@ void drawRays() {
 void drawRaysBad()
 {
 
-    for (int j = 0; j < 0.66; j++)
+    float sim_angle = p_angle - float(PI)/8;
+
+    for (int j = 0; j < 66; j+=1)
     {
+        sim_angle+= 0.01;
 
         for (int i = 0; i < 512; i++) {
-            float lx = px + i * pdx;
-            float ly = py + i * pdy;
+            float lx = px + i * cos(sim_angle);
+            float ly = py + i * sin(sim_angle);
+
+            int len = 512-i;
+
+            //DrawLine(j, len/2, j, len+(len/2), GREEN);
 
             DrawPixel(lx, ly, GREEN);
 

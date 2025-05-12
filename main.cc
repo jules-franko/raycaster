@@ -51,30 +51,36 @@ void drawRays() {
 
 void drawRaysBad()
 {
+    int arr[512];
 
     float sim_angle = p_angle - float(PI)/8;
 
-    for (int j = 0; j < 66; j+=1)
+    for (int j = 0; j < 512; j+=1)
     {
-        sim_angle+= 0.01;
+        sim_angle += 0.001;
+
+        int len;
 
         for (int i = 0; i < 512; i++) {
             float lx = px + i * cos(sim_angle);
             float ly = py + i * sin(sim_angle);
 
-            int len = 512-i;
-
-            //DrawLine(j, len/2, j, len+(len/2), GREEN);
-
-            DrawPixel(lx, ly, GREEN);
+            //DrawPixel(lx, ly, GREEN);
 
             int y = int(ly/64);
             int x = int(lx/64);
 
             if ((map[  x  ] == 1) && (map[ y*8+x ])) {
+
+                len = 512-i;
+
+
+
                 break;
             }
         }
+
+        DrawLine(j, len/4, j, len+(len/4), GREEN);
 
     }
 
@@ -147,8 +153,8 @@ int main(void)
         BeginDrawing();
 
             ClearBackground(BLACK);
-            drawMap2d();
-            drawPlayer();
+            //drawMap2d();
+            //drawPlayer();
             drawRaysBad();
             //drawRays();
 

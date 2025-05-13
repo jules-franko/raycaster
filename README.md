@@ -1,2 +1,2 @@
 # Simple Raycaster
-A simple raycasting engine
+A simple raycasting engine.
